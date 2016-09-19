@@ -1,5 +1,4 @@
 #!/bin/sh
-
 # ------------------------------------------------------------------------------ 
 # 1.
 #
@@ -17,31 +16,14 @@
 
 # go to the parent folder where the script got executed. 
 cd "$(dirname "$0")/.."        
-
 # set the parent folder as ROOT
 DOTFILES_ROOT=$(pwd -P)
+# load common funtions
+source $DOTFILES_ROOT/install/common.sh 
+
 # out a linebreak
 echo ''  
 
-# ------------------------------------------------------------------------------ 
-# base output functions 
-# ------------------------------------------------------------------------------ 
-info () {
-    printf "\r  [ \033[00;34m..\033[0m ] $1\n"
-}
-user () {
-    printf "\r  [ \033[0;33m??\033[0m ] $1\n"
-}
-
-success () {
-    printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
-}
-
-fail () {
-    printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
-    echo ''
-    exit
-}
 info "------------------------------------------------------------"
 info "DOTFILES_ROOT = $DOTFILES_ROOT"
 info "------------------------------------------------------------"
