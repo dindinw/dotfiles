@@ -140,7 +140,9 @@ let g:UltiSnipsJumpForwardTrigger = "<Right>"
 let g:UltiSnipsJumpBackwardTrigger = "<Left>"
 
 " QuickRun 
-Plugin 'thinca/vim-quickrun'
+" Plugin 'thinca/vim-quickrun'
+" My forked QuickRun
+ Plugin 'dindinw/vim-quickrun'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
