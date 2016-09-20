@@ -223,9 +223,15 @@ hi ColorColumn ctermbg=23
 " QuickRun
 nnoremap ,R :QuickRun<CR>
 nnoremap ,r :QuickRun<CR>
+"let g:quickrun_config = {
+"\   \"_" : {
+"\       \"outputter" : \"message",
+"\   },
+"\}
 let g:quickrun_config = {
 \   "_" : {
-\       "outputter" : "message",
+\      "outputter" : "quickfix",
+\      "outputter/quickfix/into" : 0,
 \   },
 \}
 let g:quickrun_no_default_key_mappings = 1
