@@ -231,7 +231,7 @@ nnoremap ,r :QuickRun<CR>
 let g:quickrun_config = {
 \   "_" : {
 \      "outputter" : "quickfix",
-\      "outputter/quickfix/into" : 0,
+\      "outputter/quickfix/into" : 1,
 \   },
 \}
 let g:quickrun_no_default_key_mappings = 1
