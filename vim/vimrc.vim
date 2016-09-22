@@ -144,6 +144,9 @@ let g:UltiSnipsJumpBackwardTrigger = "<Left>"
 " My forked QuickRun
  Plugin 'dindinw/vim-quickrun'
 
+" vimproc, need to compile before use 
+Plugin 'Shougo/vimproc.vim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -223,18 +226,32 @@ set cc=120
 hi ColorColumn ctermbg=23
 
 " QuickRun
-nnoremap ,R :QuickRun<CR>
-nnoremap ,r :QuickRun<CR>
-"let g:quickrun_config = {
-"\   \"_" : {
-"\       \"outputter" : \"message",
-"\   },
-"\}
+nnoremap ,r  :QuickRun <CR>
+nnoremap ,ra :QuickRun -args ""<RIGHT>
+nnoremap ,r1 :QuickRun -outputter quickfix:into=1<CR>
+nnoremap ,r2 :QuickRun -outputter loclist:into=1<CR>
 let g:quickrun_config = {
 \   "_" : {
-\      "outputter" : "quickfix",
-\      "outputter/quickfix/into" : 1,
+\      "runner" : "vimproc",
+\      "runner/vimproc/updatetime" : 10,
+\      "outputter" : "message"
 \   },
 \}
 let g:quickrun_no_default_key_mappings = 1
 
+
+" Make it easy to navigate quickfix errors (and helpgrep)...
+"
+nmap <silent> <DOWN>   :cnext<CR>
+nmap <silent> <UP>     :cprev<CR>
+nmap <silent> <RIGHT>  :cnf<CR>
+nmap <silent> <LEFT>   :cpf<CR>
+
+" Fix A B C D mess up with arrow keys, might relate to Command-T
+"
+map <Esc>[B <Down>
+
+" Quick edit and reload the ~/.vimrc 
+"
+noremap ;v  :tabnew $MYVIMRC<CR> 
+noremap ;vv :source $MYVIMRC<CR>
