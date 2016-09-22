@@ -227,7 +227,8 @@ hi ColorColumn ctermbg=23
 
 " QuickRun
 nnoremap ,r  :QuickRun <CR>
-nnoremap ,ra :QuickRun -args ""<RIGHT>
+nnoremap ,ra :QuickRun -args ""<LEFT>
+nnoremap ,R  :<UP>
 nnoremap ,r1 :QuickRun -outputter quickfix:into=1<CR>
 nnoremap ,r2 :QuickRun -outputter loclist:into=1<CR>
 let g:quickrun_config = {
@@ -255,3 +256,15 @@ map <Esc>[B <Down>
 "
 noremap ;v  :tabnew $MYVIMRC<CR> 
 noremap ;vv :source $MYVIMRC<CR>
+
+" Open an new tab for help
+"
+augroup HelpInTabs
+	autocmd!
+	autocmd BufEnter *.txt call HelpInNewTab()
+augroup END
+function! HelpInNewTab ()
+	if &buftype == 'help'
+		execute "normal \<C-W>T"
+	endif
+endfunction
