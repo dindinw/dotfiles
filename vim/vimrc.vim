@@ -226,7 +226,7 @@ let g:CommandTSelectPrevMap = ['<C-k>', '<ESC>OA']
 " Ctrl-P
 nnoremap ,p :CtrlP<CR>
 
-" 120 ruler
+" 120 width verical line
 set cc=120
 hi ColorColumn ctermbg=23
 
@@ -273,3 +273,12 @@ function! HelpInNewTab ()
 		execute "normal \<C-W>T"
 	endif
 endfunction
+
+" Move around
+" hljk ,  0^$ , -<CR> , { } , gg, G , <N>gg <N>G, <P>% eg: 50%
+" % can jump between {} () [] , see :help matchpair
+" w b W B
+
+" Using backspace to delete in insert mode
+" see :helpg :set backspace
+set backspace=indent,eol,start
