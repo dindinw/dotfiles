@@ -157,7 +157,7 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 
 
-" get file pull path
+" get file full path
 noremap ,cp :let @+=expand("%:p:h")<CR>
 noremap ,cl :let @+=expand("%:p")<CR>
 
@@ -282,3 +282,123 @@ endfunction
 " Using backspace to delete in insert mode
 " see :helpg :set backspace
 set backspace=indent,eol,start
+
+" Tabular
+if exists(":Tabularize")
+    nmap ,g :Tabularize /
+endif
+
+" In insert mode, you also can copy
+" CTRL-Y  : copy previous line (keep typing it, it will copy lettles one by one)
+" CTRL-E  : copy following line
+" CTRL-A  : insert again the most recent inserted
+" CTRL-R= : insert a expession evaluation.
+
+" CTRL-T  : insert tab
+" CTRL-D  : remove tab , so that the pair can work as line ag
+" CTRL-V  : insert control character. C-VI -> ^I -> tab
+" CTRL-O  : go to normal mode for one command than back to insert mode
+
+" Searching
+" need to add extra backslash, ex:
+"   \d\+      foo\|bar
+" or use \v as prefix to omit extra backslash,ex:
+"   \v\d+    \vfoo|bar
+" you can remap / to /\v so that save extra backslashes
+" nnoremap / /\v
+" |  : or
+" &  : and
+" \< : begin of word
+" /> : end of word
+" *  : seach next current word on the cursor
+" #  : seach provious current word on the cursor
+
+" using delete key in normal mode to cancel the hight search result
+nmap <silent> <BS> :nohlsearch<CR>
+
+"
+" Yank matches, very useful, learn from Damian Conway, coyied from
+" https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup/blob/master/plugin/yankmatches.vim
+"
+nmap <silent> dm  :     call ForAllMatches('delete', {})<CR>
+nmap <silent> DM  :     call ForAllMatches('delete', {'inverse':1})<CR>
+nmap <silent> ym  :     call ForAllMatches('yank',   {})<CR>
+nmap <silent> YM  :     call ForAllMatches('yank',   {'inverse':1})<CR>
+vmap <silent> dm  :<C-U>call ForAllMatches('delete', {'visual':1})<CR>
+vmap <silent> DM  :<C-U>call ForAllMatches('delete', {'visual':1, 'inverse':1})<CR>
+vmap <silent> ym  :<C-U>call ForAllMatches('yank',   {'visual':1})<CR>
+vmap <silent> YM  :<C-U>call ForAllMatches('yank',   {'visual':1, 'inverse':1})<CR>
+
+function! ForAllMatches (command, options)
+    " Remember where we parked...
+    let orig_pos = getpos('.')
+
+    " Work out the implied range of lines to consider...
+    let in_visual = get(a:options, 'visual', 0)
+    let start_line = in_visual ? getpos("'<'")[1] : 1
+    let end_line   = in_visual ? getpos("'>'")[1] : line('$')
+
+    " Are we inverting the selection???
+    let inverted = get(a:options, 'inverse', 0)
+
+    " Are we modifying the buffer???
+    let deleting = a:command == 'delete'
+
+    " Honour smartcase (which :lvimgrep doesn't, by default)
+    let sensitive = &ignorecase && &smartcase && @/ =~ '\u' ? '\C' : ''
+
+    " Identify the lines to be operated on...
+    exec 'silent lvimgrep /' . sensitive . @/ . '/j %'
+    let matched_line_nums
+    \ = reverse(filter(map(getloclist(0), 'v:val.lnum'), 'start_line <= v:val && v:val <= end_line'))
+
+    " Invert the list of lines, if requested...
+    if inverted
+        let inverted_line_nums = range(start_line, end_line)
+        for line_num in matched_line_nums
+            call remove(inverted_line_nums, line_num-1)
+        endfor
+        let matched_line_nums = reverse(inverted_line_nums)
+    endif
+
+    " Filter the original lines...
+    let yanked = ""
+    for line_num in matched_line_nums
+        " Remember yanks or deletions...
+        let yanked = getline(line_num) . "\n" . yanked
+
+        " Delete buffer lines if necessary...
+        if deleting
+            exec line_num . 'delete'
+        endif
+    endfor
+
+    " Make yanked lines available for putting...
+    let @" = yanked
+    " Make sure the system clipboard also yanked, required if set clipboard+=unnamed
+    let @+ = yanked
+
+    " Return to original position...
+    call setpos('.', orig_pos)
+
+    " Report results...
+    redraw
+    let match_count = len(matched_line_nums)
+    if match_count == 0
+        unsilent echo 'Nothing to ' . a:command . ' (no matches found)'
+    elseif deleting
+        unsilent echo match_count . (match_count > 1 ? ' fewer lines' : ' less line')
+    else
+        unsilent echo match_count . ' line' . (match_count > 1 ? 's' : '') . ' yanked'
+    endif
+endfunction
+
+
+
+
+
+
+
+
+
+
