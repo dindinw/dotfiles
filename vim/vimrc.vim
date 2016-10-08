@@ -69,7 +69,7 @@ set incsearch hlsearch
 "highlight search"
 set hlsearch
 
-"using a compeleted command menu at the botton of screen"
+"using a completed command menu at the botton of screen"
 set wildmenu
 
 "set to access system clipboard"
@@ -120,7 +120,7 @@ Plugin 'wincent/command-t'
 " Plugin 'xolox/vim-misc'      "vim-easytags required
 " Plugin 'xolox/vim-easytags'
 
-" YCM code compelete 
+" YCM code complete 
 Plugin 'Valloric/YouCompleteMe'
 
 " Code Snippet
@@ -147,10 +147,17 @@ let g:UltiSnipsJumpBackwardTrigger = "<Left>"
 " QuickRun 
 " Plugin 'thinca/vim-quickrun'
 " My forked QuickRun
- Plugin 'dindinw/vim-quickrun'
+Plugin 'dindinw/vim-quickrun'
 
 " vimproc, need to compile before use 
 Plugin 'Shougo/vimproc.vim'
+
+" go vim plugin
+Plugin 'fatih/vim-go' 
+noremap ,gb :GoBuild<CR>
+noremap ,gr :GoRun<CR>
+noremap ,gi :GoInstall<CR>
+noremap ,gt :GoTest<CR>
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -212,11 +219,11 @@ let g:EclimCompletionMethod = 'omnifunc'
 highlight Pmenu ctermfg=10 ctermbg=23
 
 " Command-t  
-nnoremap ,t :CommandT<CR>
-nnoremap ,b :CommandTBuffer<CR>
-nnoremap ,j :CommandTJump<CR>
+nnoremap ,ct :CommandT<CR>
+nnoremap ,cb :CommandTBuffer<CR>
+nnoremap ,cj :CommandTJump<CR>
 "                                                     Most Recently Used (MRU) files 
-nnoremap ,m :CommandTMRU<CR> 
+nnoremap ,cm :CommandTMRU<CR> 
 "                                                     use Esc to quit
 let g:CommandTCancelMap     = ['<ESC>', '<C-c>']
 "                                                     map UP/DOWN for next/prev
@@ -262,6 +269,10 @@ map <Esc>[B <Down>
 noremap ;v  :tabnew $MYVIMRC<CR> 
 noremap ;vv :source $MYVIMRC<CR>
 
+" Quick reload current file changes from disk
+"
+noremap ;r  :edit!<CR>
+
 " Open an new tab for help
 "
 augroup HelpInTabs
@@ -284,9 +295,9 @@ endfunction
 set backspace=indent,eol,start
 
 " Tabular
-if exists(":Tabularize")
-    nmap ,g :Tabularize /
-endif
+" if exists(":Tabularize")
+    nmap ;g :Tabularize /
+" endif
 
 " In insert mode, you also can copy
 " CTRL-Y  : copy previous line (keep typing it, it will copy lettles one by one)
@@ -393,12 +404,130 @@ function! ForAllMatches (command, options)
     endif
 endfunction
 
+"
+" Range
+" .   : means current cursor line
+" $   : means the last line
+" .,$ : means each line of the rest of file
+" 99: : short-cut for input :.,+98
+" %   : short-cut for 1,$ (entire file)
+"
+" Repalce
+" &   : do replace again, short-cut for :s<CR>
+"
+" globle range ':g'
+" ex1  :  'g /^\s/ :center'
+" ex2  :  'g /<foo>/ :normal gUU'
+" Note :  'g' also used as a command for toggle case
+"      :  gU gu g~ gUgU(gUU) gugu(guu)
+"
+" When separated with ';' the cursor position will be set to that line
+" before interpreting the next line specifier.  This doesn't happen for ','.
+" Examples 
+"    -5,+5
+" 	from the cursor line. up 5 line and after 5 line, so that 10 lines range
+"    -5;+5
+"   from the cursor line, up 5 line then down 5 line, so that 5 lines range
+" ':g /./ :.;/^$/join' : join every paragraph.
+" ':g /./ :.;/^$/-1join' : for every line, try to do command, from the current
+" cursor line(.) to next space line (^$), then go back -1 line(so that excluded 
+" the space line), then join those range.    
+" 
 
+"
+" Yank
+"
+" y$  : yank to end of line
+" yw  : yank to end of word
+" yW  : yank to end of work (pad determined)
+" yaw : yank a word
+" yaW : yank a word (pad determined)
+" yas : yank a sentence
+" yap : yank a pragraph
+" ya{ : yank a {...}
+" ya[ : yank a [...]
+" ya( : yank a (...)
+" ya< : yank a <...>
+" ya" : yank a \"..."
+" ya' : yank a '...'
+" ya` : yank a `...`
+"
 
+"
+" Undo beyond u 
+"
+" g- 		Go to older text state. 
+" :earlier {count}	Go to older text state {count} times.
+" :earlier {N}s		Go to older text state about {N} seconds before.
+" :earlier {N}m		Go to older text state about {N} minutes before.
+" :earlier {N}h		Go to older text state about {N} hours before.
+" :earlier {N}d		Go to older text state about {N} days before.
+" g+		Go to newer text state.
+" :later {count}	Go to newer text state {count} times.
+" :later {N}s		Go to newer text state about {N} seconds later.
+" :later {N}m		Go to newer text state about {N} minutes later.
+" :later {N}h		Go to newer text state about {N} hours later.
+" :later {N}d		Go to newer text state about {N} days later.
+"
 
+"
+" Command History 
+"
+" q: 	 open cmd history window
+" q/     open seach history window
+"
 
+"
+" command complete
+"
+" % 	means current file path
+" write to a back file of the current file
+" :w[rite] %.bak
+"
+" # 	means latest edited file name
+" :r[ead] #
+" 	:r[ead] {file_name} 	insert content of file below the cursor.
+"							if no file_name provided, means current file.	
+" 	:r[ead] !{cmd}			insert output of cmd below the cursor.	
+"
+" **	means match any number of *, */*, */*/* 
+" open any filename.txt below you current directory
+" next **/filename.txt  
+"
 
+"
+" text complete (insert mode, see ':help ins-completion')
+" 
+" ctrl-x ctrl-f	complete file names
+"
+" ctrl-x ctrl-d	complete defined identifiers
+" 	which controled by 'define' setting.
+" 	'set define=^\s*#\s*define',the default value is for c programs.
+" 	for c++ this value may like ^\(#\s*define\|[a-z]*\s*const\s*[a-z]*\)
+" 
+" ctrl-x ctrl-n	next completion
+" 	complete 'keyword'character from the current file (or files in the
+" 	session).
+"					ctrl-x ctrl-p	previous completion
+" 					ctrl-x ctrl-i	complete identifiers
+" 
+" ctrl-x ctrl-o	omni completion
+"   see the difference between omnifunc and completefunc, :help 'omnifunc' 
+" 
 
+" 
+" visually 
+"   v		(visual mode)
+"   v		(visual line mode)
+"   <c-v>	(visual block mode)
+" you can alawys switch bwteen the modes from another. 
+"
+" vip 	visual select a paragraph
+" vipJ	then join all lines
+"
+" gv	reslect the same block you selected
 
-
-
+" Folding
+"  zf		fold
+"  zd		delete fold
+ 
