@@ -158,6 +158,10 @@ noremap ,gb :GoBuild<CR>
 noremap ,gr :GoRun<CR>
 noremap ,gi :GoInstall<CR>
 noremap ,gt :GoTest<CR>
+noremap ,gd :GoDoc<CR>
+
+" vim-test plugin
+Plugin 'janko-m/vim-test'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
