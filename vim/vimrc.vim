@@ -159,11 +159,16 @@ noremap ,gr :GoRun<CR>
 noremap ,gi :GoInstall<CR>
 noremap ,gt :GoTest<CR>
 noremap ,gd :GoDoc<CR>
+"" Enable goimports to automatically insert import paths
+let g:go_fmt_command = "goimports"
 
 " vim-test plugin
 Plugin 'janko-m/vim-test'
 noremap ,t :TestNearest<CR>
 noremap ,T :TestFile<CR>
+
+" delimitMate plugin auto-compelete quotes,paren, brackets
+Plugin 'Raimondi/delimitMate'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
