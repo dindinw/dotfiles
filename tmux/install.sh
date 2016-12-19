@@ -6,8 +6,8 @@ DOTFILES_ROOT=$(pwd -P)
 # load common funtions
 source $DOTFILES_ROOT"/install/common.sh"
 
-dot_vimrc=~/.vimrc
-vimrc=$DOTFILES_ROOT"/vim/vimrc.vim"
+dot_tmux_conf=~/.tmux.conf
+tmux_conf=$DOTFILES_ROOT"/tmux/tmux.conf"
 
-install $dot_vimrc $vimrc 
+install $dot_tmux_conf $tmux_conf
 
