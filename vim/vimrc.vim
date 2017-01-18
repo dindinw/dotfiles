@@ -3,7 +3,7 @@
 "   mkdir -p ~/.vim/autoload ~/.vim/bundle && \
 "   curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 "
-execute pathogen#infect()
+" execute pathogen#infect()
 
 "The ft plugin, :set ft=python for a file type."
 filetype plugin on
@@ -13,6 +13,27 @@ filetype plugin on
 "autocmd FileType html setlocal shiftwidth=2 tabstop=2"
 "autocmd FileType javascript setlocal shiftwidth=2 tabstop=2"
 filetype plugin indent on
+
+" by default all tabs 4
+
+" All Tabs (4)
+set tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab
+" All Tabs (8)
+"set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
+" All Space (4)
+"set softtabstop=4 shiftwidth=4 expandtab
+
+"set auto indent"
+set autoindent
+
+"space or tab by file type
+
+"for html/rb files, 2 spaces
+autocmd Filetype html setlocal ts=2 sw=2 expandtab
+autocmd Filetype ruby setlocal ts=2 sw=2 expandtab
+"for java/javascript 4 spaces
+autocmd Filetype javascript setlocal ts=4 sw=4 sts=0 noexpandtab
+autocmd Filetype java setlocal ts=4 sw=4 sts=0 noexpandtab
 
 "always show statusline
 set laststatus=2
@@ -35,23 +56,6 @@ syntax on
 "color scheme"
 "colorscheme ir_black
 
-" All Tabs (8)
-"Tabs are eight columns wide. Each indentation level is one tab. 
-"Popular with the Linux kernel.
-"set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
-
-" All Tabs (4)
-"Tabs are four columns wide. Each indentation level is one tab. 
-"Popular with Windows developers using Visual Studio.)
-set tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab
-
-" All Space (4)
-"Each indentation level is four spaces. Tabs are not used. 
-"Popular with Java programmers
-"set softtabstop=4 shiftwidth=4 expandtab
-
-"set auto indent"
-set autoindent
 
 set foldlevel=0
 
